@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>公開講座運営アシスタント</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <p class="eyebrow">Hospital Public Lecture Tool</p>
+      <h1>公開講座運営アシスタント</h1>
+      <p class="lead">講座情報を入力すると、自動返信メール・リマインダーメール・フォーム案内文を生成できます。</p>
+    </div>
+  </header>
+
+  <main class="container app-layout">
+    <section class="card basic-settings-card">
+      <div class="section-heading collapsible-heading">
+        <div>
+          <h2>基本設定</h2>
+          <p>毎回使う病院情報です。ブラウザ内に保存して、次回以降の入力を減らせます。</p>
+        </div>
+        <button type="button" id="toggleBasicSettingsButton" class="secondary-button" aria-expanded="false" aria-controls="basicSettingsPanel">基本設定を開く</button>
+      </div>
+
+      <div id="basicSettingsPanel" class="collapsible-panel" hidden>
+        <div class="form-grid">
+          <label>
+            病院名
+            <input id="hospitalName" type="text" value="医療法人財団明理会　明理会東京大和病院">
+          </label>
+          <label>
+            部署名
+            <input id="departmentName" type="text" value="地域医療連携室　広報企画担当">
+          </label>
+          <label>
+            問い合わせ電話番号
+            <input id="phoneNumber" type="tel" value="03-5943-2411">
+          </label>
+          <label>
+            公開講座ホームページURL
+            <input id="eventUrl" type="url" value="https://tokyoyamato-hp.com/event/">
+          </label>
+          <label class="wide">
+            署名用住所
+            <input id="signatureAddress" type="text" value="〒173-0001 東京都板橋区本町36-3">
+          </label>
+          <label class="wide">
+            送信者名
+            <input id="senderName" type="text" value="明理会東京大和病院 広報企画担当">
+          </label>
+        </div>
+
+        <div class="basic-actions">
+          <button type="button" id="saveBasicSettingsButton" class="primary-button">基本設定を保存</button>
+          <button type="button" id="resetBasicSettingsButton" class="secondary-button">基本設定を初期値に戻す</button>
+          <span id="basicSettingsStatus" class="status-message" aria-live="polite"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-heading">
+        <h2>よく使う会場テンプレート</h2>
+        <p>先に会場を選ぶと、会場情報を自動入力できます。</p>
+      </div>
+
+      <div class="template-buttons">
+        <button type="button" class="secondary-button" data-template="highlife1">ハイライフプラザいたばし 1階会議室</button>
+        <button type="button" class="secondary-button" data-template="highlife2">ハイライフプラザいたばし 2階Aホール</button>
+        <button type="button" class="secondary-button" data-template="yamato">明理会東京大和病院 K&amp;Eビル1階</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-heading">
+        <h2>講座情報</h2>
+        <p>公開講座ごとの内容を入力してください。開催日を選ぶと曜日が自動入力されます。</p>
+      </div>
+
+      <div class="form-grid">
+        <label class="wide">
+          講演名
+          <input id="lectureTitle" type="text" placeholder="例：前立腺がんの最新治療について">
+        </label>
+        <label class="wide">
+          講演内容
+          <textarea id="lectureDescription" rows="4" placeholder="講演の概要を入力してください"></textarea>
+        </label>
+        <label>
+          開催日
+          <input id="eventDate" type="date">
+        </label>
+        <label>
+          曜日
+          <input id="dayOfWeek" type="text" placeholder="例：土">
+        </label>
+        <label>
+          開催時間
+          <select id="timeRange">
+            <option value="10:00～11:00">10:00～11:00</option>
+            <option value="14:00～15:00" selected>14:00～15:00</option>
+            <option value="15:00～16:00">15:00～16:00</option>
+            <option value="その他">その他</option>
+          </select>
+        </label>
+        <label id="customTimeRangeField" hidden>
+          その他の開催時間
+          <input id="customTimeRange" type="text" placeholder="例：13:30～15:00">
+        </label>
+        <label>
+          開場時間補足
+          <input id="openingNote" type="text" value="開場30分前">
+        </label>
+        <label>
+          診療科・職種
+          <input id="speakerDepartment" type="text" list="departmentOptionsList" placeholder="例：泌尿器科">
+          <datalist id="departmentOptionsList"></datalist>
+        </label>
+        <label class="wide">
+          講師名
+          <input id="speakerName" type="text" placeholder="例：髙　和英 医師">
+        </label>
+        <label>
+          会場名
+          <input id="venueName" type="text">
+        </label>
+        <label>
+          会場補足
+          <input id="venueNote" type="text" placeholder="例：1階会議室">
+        </label>
+        <label>
+          郵便番号
+          <input id="postalCode" type="text" placeholder="例：〒173-0004">
+        </label>
+        <label class="wide">
+          住所
+          <input id="address" type="text">
+        </label>
+        <label class="wide">
+          アクセス
+          <textarea id="access" rows="3"></textarea>
+        </label>
+        <label>
+          定員
+          <input id="capacity" type="text" placeholder="例：30名">
+        </label>
+        <label class="wide">
+          備考
+          <textarea id="notes" rows="3">受講の際は、マスク着用をお願いいたします。</textarea>
+        </label>
+      </div>
+    </section>
+
+    <section class="actions-card">
+      <button type="button" id="generateButton" class="primary-button">コードを生成</button>
+      <button type="button" id="clearButton" class="secondary-button">入力をクリア</button>
+      <button type="button" id="sampleButton" class="secondary-button">サンプルを入力</button>
+    </section>
+
+    <section class="card completion-message-card">
+      <div class="section-heading">
+        <h2>Googleフォーム送信完了メッセージ</h2>
+        <p>基本設定の病院名と電話番号を使って、Googleフォームの送信完了画面に貼り付ける文章を生成します。</p>
+      </div>
+
+      <div class="message-generator-actions">
+        <button type="button" id="generateCompletionMessageButton" class="primary-button">自動生成</button>
+        <div class="copy-area">
+          <span id="completionMessageCopyStatus" class="copy-status" aria-live="polite"></span>
+          <button type="button" id="copyCompletionMessageButton" class="copy-button secondary-button">コピー</button>
+        </div>
+      </div>
+
+      <textarea id="googleFormCompletionMessage" class="generated-message" rows="10" readonly placeholder="「自動生成」を押すと、送信完了メッセージが表示されます。"></textarea>
+    </section>
+
+    <section class="outputs" aria-live="polite">
+      <div class="section-heading">
+        <h2>生成結果</h2>
+        <p>各ボックスの「コピー」ボタンから、そのまま貼り付けできます。</p>
+      </div>
+
+      <div id="outputList" class="output-list">
+        <p class="empty-message">講座情報を入力し、「コードを生成」を押してください。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>入力内容はブラウザ内だけで処理され、外部へ送信されません。</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
